@@ -21,7 +21,7 @@ return new class extends Migration
                   ->nullOnDelete();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->text('desecription')->nullable();
+            $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->enum('status' ,['active','archived']);
             $table->timestamps();
