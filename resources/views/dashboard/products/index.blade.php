@@ -4,13 +4,13 @@
 
 @section('breadcrumb')
 @parent
-<li class="breadcrumb-item active"> Starter</a></li>
+<li class="breadcrumb-item active"> Product</a></li>
 
 @endsection
 
 @section('content')
 <div class="mb-5">
-    <a href="{{ route('category.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a>
+    <a href="{{ route('products.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a>
 </div>
 
 <!-- @if (session()->has('success'))
@@ -49,8 +49,8 @@
                     <th></th>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Parent</th>
-                    <th>Products #</th>
+                    <th>Category</th>
+                    <th>Store</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th>Action</th>
@@ -58,35 +58,35 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($categories as $category)
+                @forelse($products as $product)
                 <tr>
-                    <!-- <td><img src="{{ asset('storage/' . $category->image) }}" alt="" height="50"></td> -->
+                    <!-- <td><img src="{{ asset('storage/' . $product->image) }}" alt="" height="50"></td> -->
                     <td>
-    @if ($category->image)
-        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" height="60">
+    @if ($product->image)
+        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" height="60">
     @else
         No Image
     @endif
 </td>
-                    <!-- <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" height="60"> -->
-                    <td>{{ $category->id }}</td>
-                    <td><a href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a></td>
-                    <!-- <td>{{ $category->name }}</a></td> -->
+                    <!-- <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" height="60"> -->
+                    <td>{{ $product->id }}</td>
+                    <td>{{ $product->name }}</a></td>
+                    <td>{{ $product->category->name }}</a></td>
+                    <td>{{ $product->store->name}}</a></td>
+                    <td>{{ $product->parent_id }}</td>
                    
-                    <td>{{ $category->parent->name }}</td>
-                   
-                    <td>{{ $category->products_number }}</td>
-                    <td>{{ $category->status }}</td>
-                    <td>{{ $category->created_at }}</td>
+                    <!-- <td>{{ $product->products_number }}</td> -->
+                    <td>{{ $product->status }}</td>
+                    <td>{{ $product->created_at }}</td>
                    
                     <td>
                        
-                        <a href="{{ route('category.edit', $category->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
                       
                     </td>
                     <td>
                   
-                        <form action="{{ route('category.destroy', $category->id) }}" method="post">
+                        <form action="{{ route('products.destroy', $product->id) }}" method="post">
                             @csrf
                             <!-- Form Method Spoofing -->
                             
@@ -98,7 +98,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9">No categories defined.</td>
+                    <td colspan="9">No products defined.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -108,7 +108,7 @@
 
       </div>
       <!-- /.row -->
-      {{ $categories->withQueryString()->links() }}
+      {{ $products->withQueryString()->links() }}
       
 
 @endsection
