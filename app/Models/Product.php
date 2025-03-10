@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use Illuminate\Support\Str;
 use App\Models\Scopes\StoreScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -52,8 +53,37 @@ class Product extends Model
         //     $product->slug = Str::slug($product->name);
         // });
 
-        
-        
-
     }
+
+    public function scopeActive(Builder $builder)
+    {
+        $builder->where('status', '=', 'active');
+    }
+
+
+    // Accessores 
+    // يتم تعريفه بهذا الشكل الشكل 
+    // get.....Attribute
+    // في المنتصف اسمه الاكسسيسور 
+    
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return 'https://www.incathlab.com/images/products/default_product.png';
+        }
+        if (Str::startsWith($this->image, ['http://', 'https://'])) {
+            return $this->image;
+        }
+        return asset('storage/' . $this->image);
+    }
+
+
+    public function getSalePercentAttribute()
+    {
+        if (!$this->compare_price) {
+            return 0;
+        }
+        return round(100 - (100 * $this->price / $this->compare_price), 1);
+    }
+    
 }

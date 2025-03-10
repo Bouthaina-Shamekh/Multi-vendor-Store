@@ -91,31 +91,53 @@ class ProductController extends Controller
 
 
         // $tags = json_decode($request->post('tags'));
-        $tags = json_decode($request->post('tags'), true);
+        $tags = $request->post('tags');
+        // dd($request->post('tags'));
         // $tag_ids = [];
-        if (!is_array($tags)) {
-            $tag_ids = []; // تعيين مصفوفة فارغة في حالة الفشل
-        }
+        // if (!is_array($tags)) {
+        //     $tag_ids = []; // تعيين مصفوفة فارغة في حالة الفشل
+        // }
+       
+        // إذا كان النص مفردًا، حوله إلى مصفوفة
+    if (is_string($tags)) {
+        $tags = [$tags];
+    }
 
-        $saved_tags = Tag::all();
+    $tag_ids = [];
+    $saved_tags = Tag::all();
+
+        // foreach ($tags as $item) {
+        //     // dd($item);
+        //     $slug = Str::slug($item->value);
+        //     $tag = $saved_tags->where('slug', $slug)->first(); //جاب ب السلق لانه بكونش فيه زوائد او فراغات او اي اشي 
+        //     if (!$tag) {
+        //         $tag = Tag::create([
+        //             'name' => $item->value,
+        //             'slug' => $slug,
+        //         ]);
+        //     }
+        //     $tag_ids[] = $tag->id;
+        // }
 
         foreach ($tags as $item) {
-            dd($item);
-            $slug = Str::slug($item->value);
-            $tag = $saved_tags->where('slug', $slug)->first(); //جاب ب السلق لانه بكونش فيه زوائد او فراغات او اي اشي 
+            // هنا نعامل $item كنص مباشرة بدون `->value`
+            $slug = Str::slug($item);
+            $tag = $saved_tags->where('slug', $slug)->first();
+    
             if (!$tag) {
                 $tag = Tag::create([
-                    'name' => $item->value,
+                    'name' => $item,
                     'slug' => $slug,
                 ]);
             }
+    
             $tag_ids[] = $tag->id;
         }
 
         // هنا بتخزن بعلاقات الماني تو ماني باستخدام السينك
         $product->tags()->sync($tag_ids);
 
-        return redirect()->route('dashboard.products.index')
+        return redirect()->route('products.index')
             ->with('success', 'Product updated');
     }
 

@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckUserType;
 use App\Http\Controllers\Dash\DashboardController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\CategoryController;
 
 Route::group([
-    'middleware' => 'auth',
+    'middleware' => ['auth:admin,web'],
         //هاي لاستخدام الراوت داخل الكود
     'prefix' => 'dashboard'  // هاي لاستخدام الكود داخل url
 ],function(){
