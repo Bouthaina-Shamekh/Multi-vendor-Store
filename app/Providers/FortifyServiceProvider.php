@@ -31,15 +31,13 @@ class FortifyServiceProvider extends ServiceProvider
         if ($request->is('dashboard/*')) {
             Config::set('fortify.guard', 'admin');
             Config::set('fortify.passwords', 'admins');
-            Config::set('fortify.prefix', 'admin');
+            Config::set('fortify.prefix', 'dashboard');
             //Config::set('fortify.home', 'admin/dashboard');
         }
 
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-
-
             public function toResponse($request) {
-                if ($request->user('admin')) {
+                if (Config::get('fortify.guard') == 'admin') {
                     return redirect()->intended('/dashboard');
                 }
 
@@ -61,6 +59,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Fortify::loginView(function () {
+            if(Config::get('fortify.guard') == 'admin'){
+                return view('auth.login');
+            }
+            return view('front.auth.login');
+        });
+
         
 
         Fortify::createUsersUsing(CreateNewUser::class);
