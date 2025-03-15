@@ -8,6 +8,7 @@ use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Dash\DashboardController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\CurrencyConverterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ Route::get('/products', [ProductController::class, 'index'])
 
      Route::get('checkout', [CheckoutController::class, 'create'])->name('checkout');
      Route::post('checkout', [CheckoutController::class, 'store']);
+
+     Route::post('currency', [CurrencyConverterController::class, 'store'])
+        ->name('currency.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
