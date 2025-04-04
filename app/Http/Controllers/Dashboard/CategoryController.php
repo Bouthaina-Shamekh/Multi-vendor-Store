@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends Controller
 {
   public function index()
   {
+
+    if (!Gate::allows('categories.view')) {
+      abort(403);
+  }
 
     $request = Request();
     // $query = Category::query();

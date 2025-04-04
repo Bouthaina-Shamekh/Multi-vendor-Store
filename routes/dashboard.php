@@ -3,12 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserType;
 use App\Http\Controllers\Dash\DashboardController;
+use App\Http\Controllers\Dashboard\RolesController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\CategoryController;
 
 Route::get('/dashboard',function(){
-    return redirect()->route('dashboard.home');
+    return redirect()->route('home');
 })->name('dashboard');
 
 
@@ -27,6 +28,14 @@ Route::group([
     Route::get('/category/trash' , [CategoryController::class , 'trash'])->name('category.trash');
     Route::put('/category/{category}/restore' , [CategoryController::class , 'restore'])->name('category.restore');
     Route::delete('/category/{category}/force-delete' , [CategoryController::class , 'forcedelete'])->name('category.forcedelete');
-    Route::resource('category' , CategoryController::class);
-    Route::resource('products' , ProductController::class);
+    // Route::resource('category' , CategoryController::class);
+    // Route::resource('products' , ProductController::class);
+
+    Route::resources([
+        'products' => ProductController::class,
+        'category' => CategoryController::class,
+        'roles' => RolesController::class,
+        // 'users' => UsersController::class,
+        // 'admins' => AdminsController::class,
+    ]);
 });

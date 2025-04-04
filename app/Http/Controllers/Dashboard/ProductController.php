@@ -13,6 +13,7 @@ class ProductController extends Controller
 {
     public function index()
   {
+    $this->authorize('view-any', Product::class);
      //بدل هاد الكود تم تنفيذ القلوبل سكوب
     // $user = Auth::user();
     //         if($user->store_id){
